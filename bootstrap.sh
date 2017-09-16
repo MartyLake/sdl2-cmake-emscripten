@@ -19,6 +19,11 @@ then
     mkdir -p $BUILD_DIR_EM
 fi
 
+if [ -z "${EMSCRIPTEN-}" ]
+then
+    source ../../DevTools/emsdk/emsdk_env.sh
+fi
+
 cd $BUILD_DIR_EM
 cmake -DCMAKE_TOOLCHAIN_FILE=$EMSCRIPTEN/cmake/Modules/Platform/Emscripten.cmake  ..
 cd -
