@@ -8,9 +8,29 @@ then
     mkdir -p $BUILD_DIR_NATIVE
 fi
 
-cd $BUILD_DIR_NATIVE
+pushd $BUILD_DIR_NATIVE
 cmake .. 
-cd -
+popd
+
+
+# Generate clang_complete file
+CLANG_COMPLETE_DIR="tmp_clang_complete"
+if [ ! -d $CLANG_COMPLETE_DIR ]
+then
+    rm -rf $CLANG_COMPLETE_DIR
+fi
+mkdir -p $CLANG_COMPLETE_DIR
+pushd $CLANG_COMPLETE_DIR
+cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
+mv compile_commands.json ..
+rm -rf ./*
+CCARGS=$HOME/.vim/bundle/clang_complete/bin/cc_args.py
+chmod a+x $CCARGS
+CXX="$CCARGS clang++" cmake ..
+make
+mv .clang_complete ..
+popd
+rm -rf $CLANG_COMPLETE_DIR
 
 
 BUILD_DIR_EM="build_em"
@@ -24,7 +44,7 @@ then
     source ../../DevTools/emsdk/emsdk_env.sh
 fi
 
-cd $BUILD_DIR_EM
+pushd $BUILD_DIR_EM
 cmake -DCMAKE_TOOLCHAIN_FILE=$EMSCRIPTEN/cmake/Modules/Platform/Emscripten.cmake  ..
-cd -
+popd
 
