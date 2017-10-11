@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/ThirdParty/tcbrindle/sdl2-cmake-scripts-88fd08a/")
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 14)
 
 
 message("CMAKE_SYSTEM_NAME [${CMAKE_SYSTEM_NAME}]")
@@ -11,7 +11,12 @@ else()
 endif()
 
 project (${PROJECT_NAME})
-add_executable(${PROJECT_NAME} src/main.cpp)
+
+file(GLOB PROJECT_SOURCES
+    "src/*.h"
+    "src/*.cpp"
+)
+add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
 configure_file("${CMAKE_SOURCE_DIR}/rsc/test.bmp"
   "${CMAKE_BINARY_DIR}/rsc/test.bmp"
   COPYONLY
