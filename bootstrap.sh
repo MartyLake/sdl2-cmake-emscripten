@@ -1,6 +1,7 @@
 #!/bin/bash
 set -euo
 set -x #debug mode
+MAIN_DIR=$(pwd)
 
 BUILD_DIR_NATIVE="build_native"
 if [ ! -d $BUILD_DIR_NATIVE ]
@@ -31,6 +32,16 @@ make
 mv .clang_complete ..
 popd
 rm -rf $CLANG_COMPLETE_DIR
+
+
+BUILD_DIR_ECLIPSE="../build_eclipse"
+if [ ! -d $BUILD_DIR_ECLIPSE ]
+then
+    mkdir -p $BUILD_DIR_ECLIPSE
+fi
+pushd $BUILD_DIR_ECLIPSE
+cmake -G"Eclipse CDT4 - Unix Makefiles" -D CMAKE_BUILD_TYPE=Debug $MAIN_DIR -DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE
+popd
 
 
 BUILD_DIR_EM="build_em"
