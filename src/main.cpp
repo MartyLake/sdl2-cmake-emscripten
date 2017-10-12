@@ -4,6 +4,7 @@ and may not be redistributed without written permission.*/
 // Using SDL and standard IO
 #include <SDL.h>
 #include <SDL_image.h>
+#include <iostream>
 #include <stdio.h>
 #include <string>
 
@@ -146,6 +147,7 @@ void close() {
 }
 
 int main(int argc, char *args[]) {
+  GameBoard board;
   // Start up SDL and create window
   if (!init()) {
     printf("Failed to initialize!\n");
@@ -185,9 +187,11 @@ int main(int argc, char *args[]) {
             }
           }
         }
+        SDL_Delay(100);
+        board.tick();
+        std::cout << "tick" << std::endl;
         // Apply the image
-        // SDL_BlitScaled(gCurrentSurface, NULL, gScreenSurface, NULL);
-        GameBoard board;
+        SDL_BlitScaled(gCurrentSurface, NULL, gScreenSurface, NULL);
         render::Do(board.getUnits(), SCREEN_WIDTH, SCREEN_HEIGHT, 20, 20,
                    gScreenSurface);
         // Update the surface

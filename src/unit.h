@@ -15,13 +15,15 @@ public:
   int getSizeY() const { return sizeY; }
   void setPositionX(int pos) { positionX = pos; }
   void setPositionY(int pos) { positionY = pos; }
+  void reverseSpeedX() { speedX = -speedX; }
+  void reverseSpeedY() { speedY = -speedY; }
 };
 
 class Ball : public Unit {
 public:
   Ball() : Unit(1, 1) {
-    speedX = 2;
-    speedY = 2;
+    speedX = 1;
+    speedY = 1;
   }
 };
 
