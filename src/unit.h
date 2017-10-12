@@ -22,3 +22,8 @@ class Pad : public Unit {
 public:
   Pad() : Unit(4, 1) {}
 };
+
+class Wall : public Unit {
+public:
+  Wall(int x, int y) : Unit(x, y) {}
+};
