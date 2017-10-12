@@ -4,6 +4,10 @@ private:
   int positionX, positionY, sizeX, sizeY;
 
 public:
+  int speedY = 0;
+  int speedX = 0;
+
+public:
   Unit(int sizeX, int sizeY);
   int getPositionX() const { return positionX; }
   int getPositionY() const { return positionY; }
@@ -15,7 +19,10 @@ public:
 
 class Ball : public Unit {
 public:
-  Ball() : Unit(1, 1) {}
+  Ball() : Unit(1, 1) {
+    speedX = 2;
+    speedY = 2;
+  }
 };
 
 class Pad : public Unit {

@@ -46,4 +46,5 @@ public:
   }
   const auto &getUnits() const { return board; }
   void tick();
+  // TODO bool collide(int posX, int posY);
 };
