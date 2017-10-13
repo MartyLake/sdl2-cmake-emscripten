@@ -54,6 +54,6 @@ public:
   const auto &getUnits() const { return board; }
   void tick();
   bool
-  collide(int posX, int posY,
+  collide(std::shared_ptr<Unit> movingUnit, int posX, int posY,
           const std::list<std::shared_ptr<Unit>> &possibleCollisions) const;
 };
