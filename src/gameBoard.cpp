@@ -5,45 +5,31 @@ bool GameBoard::collide(std::shared_ptr<Unit> movingUnit,
     int posX, int posY,
     const std::list<std::shared_ptr<Unit>> &possibleCollisions) const {
   std::cout << "x=" << posX << ",y=" << posY << std::endl;
+  auto colXX = posX;
+  auto colXY = movingUnit->getPositionY();
+  auto colYX = movingUnit->getPositionX();
+  auto colYY = posY;  
   for (const auto &u : possibleCollisions) {
     std::list<std::pair<int, int>> pixels;
     for (auto x = u->getPositionX(); x < (u->getPositionX() + u->getSizeX());
          ++x) {
       for (auto y = u->getPositionY(); y < (u->getPositionY() + u->getSizeY());
            ++y) {
-        if (x == posX && y == posY) {
-          std::cout << "collide with " << u->name << std::endl;
-		  //TODO test if collision is on X axis and/or Y axis, depending on old movingUnit position
-		  if (movingUnit->getPositionX() != posX)
-		  {
-			  std::cout << "collide on X axis " << std::endl;
+		  auto partColliding = false;
+		  if (x == colXX && y == colXY) {
+			  std::cout << "collide XX with " << u->name << std::endl;
 			  movingUnit->reverseSpeedX();
+			  partColliding = true;
 		  }
-		  if (movingUnit->getPositionY() != posY)
-		  {
-			  std::cout << "collide on Y axis " << std::endl;
+		  if (x == colYX && y == colYY) {
+			  std::cout << "collide YY with " << u->name << std::endl;
 			  movingUnit->reverseSpeedY();
+			  partColliding = true;
 		  }
-		  std::cout << "," << u->name << " x:" << u->getPositionX() << "y:" << u->getPositionY() 
-			  << "dx:" << u->speedX << "dy:" << u->speedY << std::endl;
-
-		  /*
-		  . X .
-		  . X .
-
-		  x1 = x2 = 1
-		  y1 < y2
-		  */
-
-		  /*
-		  . X X .
-		  . . . .
-
-		  x1 < x2
-		  y1 = y2 = 1
-		  */
-          return true;
-        }
+			  if (partColliding)
+			  {
+				  return true;
+			  }
       }
     }
   }
