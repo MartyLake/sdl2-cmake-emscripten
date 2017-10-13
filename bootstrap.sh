@@ -2,19 +2,8 @@
 set -euo
 set -x #debug mode
 
-BUILD_DIR_NATIVE="build_native"
-if [ ! -d $BUILD_DIR_NATIVE ]
-then
-    mkdir -p $BUILD_DIR_NATIVE
-fi
-
-pushd $BUILD_DIR_NATIVE
-cmake .. 
-popd
-
-
 # Generate clang_complete file
-CLANG_COMPLETE_DIR="tmp_clang_complete"
+CLANG_COMPLETE_DIR="build_native" #so that the json works for native compile
 if [ ! -d $CLANG_COMPLETE_DIR ]
 then
     rm -rf $CLANG_COMPLETE_DIR
@@ -31,6 +20,17 @@ make
 mv .clang_complete ..
 popd
 rm -rf $CLANG_COMPLETE_DIR
+
+BUILD_DIR_NATIVE="build_native"
+if [ ! -d $BUILD_DIR_NATIVE ]
+then
+    mkdir -p $BUILD_DIR_NATIVE
+fi
+
+pushd $BUILD_DIR_NATIVE
+cmake .. 
+popd
+
 
 
 BUILD_DIR_EM="build_em"
