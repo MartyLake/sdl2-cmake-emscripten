@@ -3,7 +3,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 namespace render {
-void Do(const std::list<std::unique_ptr<Unit>> &units, int screenW, int screenH,
+void Do(const std::list<std::shared_ptr<Unit>> &units, int screenW, int screenH,
         int gameX, int gameY, SDL_Surface *surface) {
   auto unitW = screenW / (double)(gameX);
   auto unitH = screenH / (double)(gameY);

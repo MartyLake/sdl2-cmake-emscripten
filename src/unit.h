@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 class Unit {
 private:
   int positionX, positionY, sizeX, sizeY;
@@ -6,6 +7,7 @@ private:
 public:
   int speedY = 0;
   int speedX = 0;
+  std::string name;
 
 public:
   Unit(int sizeX, int sizeY);

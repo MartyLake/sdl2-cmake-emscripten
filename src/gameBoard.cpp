@@ -1,20 +1,24 @@
 #include "gameBoard.h"
 #include <iostream>
 
-int GameBoard::collide(int posX, int posY) {
-  // TODO with this test, the ball collide with itself ...
-  // Introduce a kind of UUID so that we don't test the ball with itself
-  for (const auto &u : board) {
-    if (u->getPositionX() <= posX &&
-        posX <= (u->getPositionX() + u->getSizeX())) {
-      return 1; // reverse X
-    }
-    if (u->getPositionY() <= posY &&
-        posY <= (u->getPositionY() + u->getSizeY())) {
-      return -1; // reverse Y
+bool GameBoard::collide(
+    int posX, int posY,
+    const std::list<std::shared_ptr<Unit>> &possibleCollisions) const {
+  std::cout << "x=" << posX << ",y=" << posY << std::endl;
+  for (const auto &u : possibleCollisions) {
+    std::list<std::pair<int, int>> pixels;
+    for (auto x = u->getPositionX(); x < (u->getPositionX() + u->getSizeX());
+         ++x) {
+      for (auto y = u->getPositionY(); y < (u->getPositionY() + u->getSizeY());
+           ++y) {
+        if (x == posX && y == posY) {
+          std::cout << "collide with " << u->name << std::endl;
+          return true;
+        }
+      }
     }
   }
-  return 0;
+  return false;
 }
 
 void GameBoard::tick() {
@@ -22,14 +26,19 @@ void GameBoard::tick() {
     if (u->speedX != 0 || u->speedY != 0) {
       auto newPosX = u->getPositionX() + u->speedX;
       auto newPosY = u->getPositionY() + u->speedY;
-      auto collid = collide(newPosX, newPosY);
-      if (collid == 1) {
-        std::cout << "revX";
-        u->reverseSpeedX();
-        continue;
+      std::list<std::shared_ptr<Unit>> boardWithoutU;
+      for (const auto &v : board) {
+        if (u.get() != v.get()) {
+          boardWithoutU.push_back(v);
+        } else {
+          std::cout << "U == V";
+        }
       }
-      if (collid == -1) {
-        std::cout << "revY";
+      auto collid = collide(newPosX, newPosY, boardWithoutU);
+      if (collid) {
+        std::cout << "rev";
+        // TODO only reverse X or Y ?
+        u->reverseSpeedX();
         u->reverseSpeedY();
         continue;
       }
