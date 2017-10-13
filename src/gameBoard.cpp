@@ -55,6 +55,8 @@ void GameBoard::tick() {
     if (u->speedX != 0 || u->speedY != 0) {
       auto newPosX = u->getPositionX() + u->speedX;
       auto newPosY = u->getPositionY() + u->speedY;
+	  u->speedX += u->inertiaX;
+	  u->speedY += u->inertiaY;
       std::list<std::shared_ptr<Unit>> boardWithoutU;
       for (const auto &v : board) {
         if (u.get() != v.get()) {
@@ -72,4 +74,25 @@ void GameBoard::tick() {
       u->setPositionY(newPosY);
     }
   }
+}
+
+void GameBoard::movePad1Left()
+{
+	pad1->inertiaX = 1;
+	pad1->speedX = -1;
+}
+void GameBoard::movePad1Right()
+{
+	pad1->inertiaX = -1;
+	pad1->speedX = 1;
+}
+void GameBoard::movePad2Left()
+{
+	pad2->inertiaX = 1;
+	pad2->speedX = -1;
+}
+void GameBoard::movePad2Right()
+{
+	pad2->inertiaX = -1;
+	pad2->speedX = 1;
 }

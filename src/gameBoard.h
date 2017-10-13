@@ -4,6 +4,7 @@
 
 class GameBoard {
   std::list<std::shared_ptr<Unit>> board;
+  std::shared_ptr<Unit> pad1, pad2;
   int sizeMaxX = 20;
   int sizeMaxY = 20;
 
@@ -15,13 +16,13 @@ public:
     ball->name = "Ball";
     board.push_back((ball));
 
-    auto pad1 = std::make_shared<Pad>();
+    pad1 = std::make_shared<Pad>();
     pad1->setPositionX(3);
     pad1->setPositionY(2);
     pad1->name = "Pad1";
     board.push_back((pad1));
 
-    auto pad2 = std::make_shared<Pad>();
+    pad2 = std::make_shared<Pad>();
     pad2->setPositionX(12);
     pad2->setPositionY(17);
     pad2->name = "Pad2";
@@ -56,4 +57,8 @@ public:
   bool
   collide(std::shared_ptr<Unit> movingUnit, int posX, int posY,
           const std::list<std::shared_ptr<Unit>> &possibleCollisions) const;
+  void movePad1Left();
+  void movePad1Right();
+  void movePad2Left();
+  void movePad2Right();
 };

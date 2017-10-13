@@ -7,6 +7,8 @@ private:
 public:
   int speedY = 0;
   int speedX = 0;
+  int inertiaX = 0;
+  int inertiaY = 0;
   std::string name;
 
 public:

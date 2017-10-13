@@ -11,6 +11,14 @@ void Do(const std::list<std::shared_ptr<Unit>> &units, int screenW, int screenH,
     // The surface must be locked to access surface->pixels
     SDL_LockSurface(surface);
   }
+  {
+	  SDL_Rect r;
+	  r.x = 0;
+	  r.y = 0;
+	  r.w = screenW;
+	  r.h = screenH;
+	  SDL_FillRect(surface, &r, SDL_MapRGB(surface->format, 0, 10, 10));
+  }
 
   for (const auto &unit : units) {
     // Create a rectangle

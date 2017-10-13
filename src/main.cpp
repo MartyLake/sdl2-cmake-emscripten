@@ -177,10 +177,18 @@ int main(int argc, char *args[]) {
               break;
             case SDLK_LEFT:
               gCurrentSurface = gKeyPressSurfaces[KEY_PRESS_SURFACE_LEFT];
+			  board.movePad1Left();
               break;
-            case SDLK_RIGHT:
-              gCurrentSurface = gKeyPressSurfaces[KEY_PRESS_SURFACE_RIGHT];
-              break;
+			case SDLK_RIGHT:
+				gCurrentSurface = gKeyPressSurfaces[KEY_PRESS_SURFACE_RIGHT];
+				board.movePad1Right();
+				break;
+			case SDLK_a:
+				board.movePad2Left();
+				break;
+			case SDLK_z:
+				board.movePad2Right();
+				break;
             default:
               gCurrentSurface = gKeyPressSurfaces[KEY_PRESS_SURFACE_DEFAULT];
               break;
@@ -191,7 +199,7 @@ int main(int argc, char *args[]) {
         board.tick();
         std::cout << "tick" << std::endl;
         // Apply the image
-        SDL_BlitScaled(gCurrentSurface, NULL, gScreenSurface, NULL);
+        //SDL_BlitScaled(gCurrentSurface, NULL, gScreenSurface, NULL);
         render::Do(board.getUnits(), SCREEN_WIDTH, SCREEN_HEIGHT, 20, 20,
                    gScreenSurface);
         // Update the surface
