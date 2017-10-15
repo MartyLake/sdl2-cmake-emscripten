@@ -4,6 +4,7 @@ and may not be redistributed without written permission.*/
 // Using SDL and standard IO
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 #include <iostream>
 #include <stdio.h>
 #include <string>
@@ -47,6 +48,9 @@ SDL_Surface *gKeyPressSurfaces[KEY_PRESS_SURFACE_TOTAL];
 // Current displayed image
 SDL_Surface *gCurrentSurface = NULL;
 
+// The font
+TTF_Font *font = NULL;
+
 bool init() {
   // Initialization flag
   bool success = true;
@@ -74,6 +78,15 @@ bool init() {
         gScreenSurface = SDL_GetWindowSurface(gWindow);
       }
     }
+  }
+
+  TTF_Init();
+  const auto fontName = "rsc/BebasNeue Bold.ttf";
+  font = TTF_OpenFont(fontName, 20);
+  if (font == NULL) {
+    printf("TTF_Fount could not initialize font %s! SDL_image Error: %s\n",
+           fontName, TTF_GetError());
+    success = false;
   }
 
   return success;
@@ -148,6 +161,7 @@ void close() {
 
 int main(int argc, char *args[]) {
   GameBoard board;
+  Score score;
   // Start up SDL and create window
   if (!init()) {
     printf("Failed to initialize!\n");
@@ -177,18 +191,18 @@ int main(int argc, char *args[]) {
               break;
             case SDLK_LEFT:
               gCurrentSurface = gKeyPressSurfaces[KEY_PRESS_SURFACE_LEFT];
-			  board.movePad1Left();
+              board.movePad1Left();
               break;
-			case SDLK_RIGHT:
-				gCurrentSurface = gKeyPressSurfaces[KEY_PRESS_SURFACE_RIGHT];
-				board.movePad1Right();
-				break;
-			case SDLK_a:
-				board.movePad2Left();
-				break;
-			case SDLK_z:
-				board.movePad2Right();
-				break;
+            case SDLK_RIGHT:
+              gCurrentSurface = gKeyPressSurfaces[KEY_PRESS_SURFACE_RIGHT];
+              board.movePad1Right();
+              break;
+            case SDLK_a:
+              board.movePad2Left();
+              break;
+            case SDLK_z:
+              board.movePad2Right();
+              break;
             default:
               gCurrentSurface = gKeyPressSurfaces[KEY_PRESS_SURFACE_DEFAULT];
               break;
@@ -199,10 +213,10 @@ int main(int argc, char *args[]) {
         board.tick();
         std::cout << "tick" << std::endl;
         // Apply the image
-        //SDL_BlitScaled(gCurrentSurface, NULL, gScreenSurface, NULL);
-		render::Do(board.getUnits(), SCREEN_WIDTH, SCREEN_HEIGHT, 20, 20,
-			gScreenSurface); render::Do(score, SCREEN_WIDTH, SCREEN_HEIGHT, 
-				gScreenSurface);
+        // SDL_BlitScaled(gCurrentSurface, NULL, gScreenSurface, NULL);
+        render::Do(board.getUnits(), SCREEN_WIDTH, SCREEN_HEIGHT, 20, 20,
+                   gScreenSurface);
+        render::Do(score, SCREEN_WIDTH, SCREEN_HEIGHT, gScreenSurface, font);
         // Update the surface
         SDL_UpdateWindowSurface(gWindow);
       }

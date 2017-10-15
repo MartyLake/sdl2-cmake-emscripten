@@ -41,6 +41,10 @@ configure_file("${CMAKE_SOURCE_DIR}/rsc/press.bmp"
   "${CMAKE_BINARY_DIR}/rsc/press.bmp"
   COPYONLY
 )
+configure_file("${CMAKE_SOURCE_DIR}/rsc/BebasNeue Bold.ttf"
+  "${CMAKE_BINARY_DIR}/rsc/BebasNeue Bold.ttf"
+  COPYONLY
+)
 
 if ( CMAKE_COMPILER_IS_GNUCC )
   target_compile_options(${PROJECT_NAME} PRIVATE "-Wall")

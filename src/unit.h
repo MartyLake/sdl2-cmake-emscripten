@@ -21,7 +21,7 @@ public:
   void setPositionY(int pos) { positionY = pos; }
   void reverseSpeedX() { speedX = -speedX; }
   void reverseSpeedY() { speedY = -speedY; }
-  virtual void collidingWith(Unit* other, int newPosX, int newPosY) {}
+  virtual void collidingWith(Unit *other, int newPosX, int newPosY) {}
 };
 
 class Ball : public Unit {
