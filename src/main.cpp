@@ -161,7 +161,6 @@ void close() {
 
 int main(int argc, char *args[]) {
   GameBoard board;
-  Score score;
   // Start up SDL and create window
   if (!init()) {
     printf("Failed to initialize!\n");
@@ -216,7 +215,8 @@ int main(int argc, char *args[]) {
         // SDL_BlitScaled(gCurrentSurface, NULL, gScreenSurface, NULL);
         render::Do(board.getUnits(), SCREEN_WIDTH, SCREEN_HEIGHT, 20, 20,
                    gScreenSurface);
-        render::Do(score, SCREEN_WIDTH, SCREEN_HEIGHT, gScreenSurface, font);
+        render::Do(board.score, SCREEN_WIDTH, SCREEN_HEIGHT, gScreenSurface,
+                   font);
         // Update the surface
         SDL_UpdateWindowSurface(gWindow);
       }

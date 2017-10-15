@@ -1,4 +1,6 @@
+#include "score.h"
 #include "unit.h"
+#include <iostream>
 #include <list>
 #include <memory>
 
@@ -9,6 +11,7 @@ class GameBoard {
   int sizeMaxY = 20;
 
 public:
+  Score score;
   GameBoard() {
     auto ball = std::make_shared<Ball>();
     ball->setPositionX(10);
@@ -28,13 +31,19 @@ public:
     pad2->name = "Pad2";
     board.push_back((pad2));
 
-    auto wallN = std::make_shared<Wall>(sizeMaxX, 1);
+    auto wallN = std::make_shared<Wall>(sizeMaxX, 1, [this]() {
+      score.bumpScoreP2();
+      std::cout << "BUMP score P2" << std::endl;
+    });
     wallN->setPositionX(0);
     wallN->setPositionY(0);
     wallN->name = "Wall north";
     board.push_back((wallN));
 
-    auto wallS = std::make_shared<Wall>(sizeMaxX, 1);
+    auto wallS = std::make_shared<Wall>(sizeMaxX, 1, [this]() {
+      score.bumpScoreP1();
+      std::cout << "BUMP score P1" << std::endl;
+    });
     wallS->setPositionX(0);
     wallS->setPositionY(sizeMaxY - 1);
     wallS->name = "Wall south";

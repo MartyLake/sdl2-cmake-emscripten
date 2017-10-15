@@ -1,4 +1,6 @@
 #pragma once
+#include <functional>
+#include <iostream>
 #include <string>
 class Unit {
 private:
@@ -21,7 +23,7 @@ public:
   void setPositionY(int pos) { positionY = pos; }
   void reverseSpeedX() { speedX = -speedX; }
   void reverseSpeedY() { speedY = -speedY; }
-  virtual void collidingWith(Unit *other, int newPosX, int newPosY) {}
+  virtual void collidingWith(Unit *other, int newPosX, int newPosY){};
 };
 
 class Ball : public Unit {
@@ -38,6 +40,14 @@ public:
 };
 
 class Wall : public Unit {
+  std::function<void()> collideWithBallCallback;
+
 public:
-  Wall(int x, int y) : Unit(x, y) {}
+  Wall(int x, int y, std::function<void()> collideWithBallCallback = nullptr)
+      : Unit(x, y), collideWithBallCallback(collideWithBallCallback) {}
+  void collidingWith(Unit *other, int newPosX, int newPosY) override {
+    if (collideWithBallCallback) {
+      collideWithBallCallback();
+    }
+  }
 };
