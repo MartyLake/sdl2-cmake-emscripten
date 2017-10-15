@@ -159,8 +159,69 @@ void close() {
   SDL_Quit();
 }
 
+struct context {
+  GameBoard *board;
+  bool quit;
+  SDL_Event e;
+  SDL_Surface *gCurrentSurface;
+};
+
+void mainLoop(void *arg) {
+  struct context *ctx = (context *)arg;
+  auto &board = *ctx->board;
+  auto &e = ctx->e;
+  auto &quit = ctx->quit;
+
+  // Handle events on queue
+  while (SDL_PollEvent(&e) != 0) { // User requests quit
+    if (e.type == SDL_QUIT) {
+      quit = true;
+    }                                 // User presses a key
+    else if (e.type == SDL_KEYDOWN) { // Select surfaces based on key press
+      switch (e.key.keysym.sym) {
+      case SDLK_UP:
+        gCurrentSurface = gKeyPressSurfaces[KEY_PRESS_SURFACE_UP];
+        break;
+      case SDLK_DOWN:
+        gCurrentSurface = gKeyPressSurfaces[KEY_PRESS_SURFACE_DOWN];
+        break;
+      case SDLK_LEFT:
+        gCurrentSurface = gKeyPressSurfaces[KEY_PRESS_SURFACE_LEFT];
+        board.movePad1Left();
+        break;
+      case SDLK_RIGHT:
+        gCurrentSurface = gKeyPressSurfaces[KEY_PRESS_SURFACE_RIGHT];
+        board.movePad1Right();
+        break;
+      case SDLK_a:
+        board.movePad2Left();
+        break;
+      case SDLK_z:
+        board.movePad2Right();
+        break;
+      default:
+        gCurrentSurface = gKeyPressSurfaces[KEY_PRESS_SURFACE_DEFAULT];
+        break;
+      }
+    }
+  }
+  board.tick();
+  std::cout << "tick" << std::endl;
+  // Apply the image
+  // SDL_BlitScaled(gCurrentSurface, NULL, gScreenSurface, NULL);
+  render::Do(board.getUnits(), SCREEN_WIDTH, SCREEN_HEIGHT, 20, 20,
+             gScreenSurface);
+  render::Do(board.score, SCREEN_WIDTH, SCREEN_HEIGHT, gScreenSurface, font);
+  // Update the surface
+  SDL_UpdateWindowSurface(gWindow);
+}
+
 int main(int argc, char *args[]) {
-  GameBoard board;
+  printf("Starting main\n");
+  struct context ctx;
+  ctx.board = new GameBoard;
+  ctx.quit = false;
+  ctx.gCurrentSurface = gKeyPressSurfaces[KEY_PRESS_SURFACE_DEFAULT];
   // Start up SDL and create window
   if (!init()) {
     printf("Failed to initialize!\n");
@@ -169,57 +230,16 @@ int main(int argc, char *args[]) {
     if (!loadMedia()) {
       printf("Failed to load media!\n");
     } else {
-      bool quit = false;
-      SDL_Event e;
-      // Set default current surface
-      gCurrentSurface = gKeyPressSurfaces[KEY_PRESS_SURFACE_DEFAULT];
-      while (!quit) {
-        // Handle events on queue
-        while (SDL_PollEvent(&e) != 0) { // User requests quit
-          if (e.type == SDL_QUIT) {
-            quit = true;
-          } // User presses a key
-          else if (e.type ==
-                   SDL_KEYDOWN) { // Select surfaces based on key press
-            switch (e.key.keysym.sym) {
-            case SDLK_UP:
-              gCurrentSurface = gKeyPressSurfaces[KEY_PRESS_SURFACE_UP];
-              break;
-            case SDLK_DOWN:
-              gCurrentSurface = gKeyPressSurfaces[KEY_PRESS_SURFACE_DOWN];
-              break;
-            case SDLK_LEFT:
-              gCurrentSurface = gKeyPressSurfaces[KEY_PRESS_SURFACE_LEFT];
-              board.movePad1Left();
-              break;
-            case SDLK_RIGHT:
-              gCurrentSurface = gKeyPressSurfaces[KEY_PRESS_SURFACE_RIGHT];
-              board.movePad1Right();
-              break;
-            case SDLK_a:
-              board.movePad2Left();
-              break;
-            case SDLK_z:
-              board.movePad2Right();
-              break;
-            default:
-              gCurrentSurface = gKeyPressSurfaces[KEY_PRESS_SURFACE_DEFAULT];
-              break;
-            }
-          }
-        }
+      printf("Starting main loop\n");
+#ifdef __EMSCRIPTEN__
+      int simulate_infinite_loop = 1;
+      emscripten_set_main_loop_arg(mainLoop, &ctx, 10, simulate_infinite_loop);
+#else
+      while (!ctx.quit) {
+        mainLoop((void *)(&ctx));
         SDL_Delay(100);
-        board.tick();
-        std::cout << "tick" << std::endl;
-        // Apply the image
-        // SDL_BlitScaled(gCurrentSurface, NULL, gScreenSurface, NULL);
-        render::Do(board.getUnits(), SCREEN_WIDTH, SCREEN_HEIGHT, 20, 20,
-                   gScreenSurface);
-        render::Do(board.score, SCREEN_WIDTH, SCREEN_HEIGHT, gScreenSurface,
-                   font);
-        // Update the surface
-        SDL_UpdateWindowSurface(gWindow);
       }
+#endif
     }
   }
 
