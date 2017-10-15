@@ -186,17 +186,21 @@ void mainLoop(void *arg) {
         gCurrentSurface = gKeyPressSurfaces[KEY_PRESS_SURFACE_DOWN];
         break;
       case SDLK_LEFT:
+      case 80:
         gCurrentSurface = gKeyPressSurfaces[KEY_PRESS_SURFACE_LEFT];
         board.movePad1Left();
         break;
       case SDLK_RIGHT:
+      case 79:
         gCurrentSurface = gKeyPressSurfaces[KEY_PRESS_SURFACE_RIGHT];
         board.movePad1Right();
         break;
       case SDLK_a:
+      case 4:
         board.movePad2Left();
         break;
       case SDLK_z:
+      case 29:
         board.movePad2Right();
         break;
       default:
