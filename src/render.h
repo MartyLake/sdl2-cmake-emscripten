@@ -1,5 +1,6 @@
 #pragma once
 #include "unit.h"
+#include "score.h"
 #include <SDL.h>
 #include <SDL_image.h>
 namespace render {
@@ -32,5 +33,10 @@ void Do(const std::list<std::shared_ptr<Unit>> &units, int screenW, int screenH,
     // The rectangle will now be blue
     SDL_FillRect(surface, &r, SDL_MapRGB(surface->format, 255, 0, 0));
   }
+}
+
+void Do(const Score& score, int screenW, int screenH, SDL_Surface *surface)
+{
+	//TODO
 }
 }

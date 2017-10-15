@@ -200,8 +200,9 @@ int main(int argc, char *args[]) {
         std::cout << "tick" << std::endl;
         // Apply the image
         //SDL_BlitScaled(gCurrentSurface, NULL, gScreenSurface, NULL);
-        render::Do(board.getUnits(), SCREEN_WIDTH, SCREEN_HEIGHT, 20, 20,
-                   gScreenSurface);
+		render::Do(board.getUnits(), SCREEN_WIDTH, SCREEN_HEIGHT, 20, 20,
+			gScreenSurface); render::Do(score, SCREEN_WIDTH, SCREEN_HEIGHT, 
+				gScreenSurface);
         // Update the surface
         SDL_UpdateWindowSurface(gWindow);
       }
