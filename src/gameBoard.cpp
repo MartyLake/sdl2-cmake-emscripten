@@ -2,11 +2,10 @@
 #include <iostream>
 
 GameBoard::GameBoard() {
-  auto ball = std::make_shared<Ball>();
-  ball->setPositionX(10);
-  ball->setPositionY(10);
+  ball = std::make_shared<Ball>();
   ball->name = "Ball";
   board.push_back((ball));
+  resetBall();
 
   pad1 = std::make_shared<Pad>();
   pad1->setPositionX(3);
@@ -23,6 +22,7 @@ GameBoard::GameBoard() {
   auto wallN = std::make_shared<Wall>(sizeMaxX, 1, [this]() {
     score.bumpScoreP2();
     std::cout << "BUMP score P2" << std::endl;
+    resetBall();
   });
   wallN->setPositionX(0);
   wallN->setPositionY(0);
@@ -32,6 +32,7 @@ GameBoard::GameBoard() {
   auto wallS = std::make_shared<Wall>(sizeMaxX, 1, [this]() {
     score.bumpScoreP1();
     std::cout << "BUMP score P1" << std::endl;
+    resetBall();
   });
   wallS->setPositionX(0);
   wallS->setPositionY(sizeMaxY - 1);
@@ -127,4 +128,12 @@ void GameBoard::movePad2Left() {
 void GameBoard::movePad2Right() {
   pad2->inertiaX = -1;
   pad2->speedX = 1;
+}
+void GameBoard::resetBall() {
+  ball->setPositionX(sizeMaxX / 2);
+  ball->setPositionY(sizeMaxY / 2);
+  ball->speedX = nextBallVelX;
+  ball->speedY = nextBallVelY;
+  nextBallVelX = -nextBallVelX;
+  nextBallVelY = -nextBallVelY;
 }

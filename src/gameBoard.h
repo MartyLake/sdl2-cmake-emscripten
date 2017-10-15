@@ -6,9 +6,11 @@
 
 class GameBoard {
   std::list<std::shared_ptr<Unit>> board;
-  std::shared_ptr<Unit> pad1, pad2;
+  std::shared_ptr<Unit> pad1, pad2, ball;
   int sizeMaxX = 20;
   int sizeMaxY = 20;
+  int nextBallVelX = 1;
+  int nextBallVelY = 1;
 
 public:
   Score score;
@@ -22,4 +24,5 @@ public:
   void movePad1Right();
   void movePad2Left();
   void movePad2Right();
+  void resetBall();
 };

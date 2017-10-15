@@ -28,10 +28,7 @@ public:
 
 class Ball : public Unit {
 public:
-  Ball() : Unit(1, 1) {
-    speedX = 1;
-    speedY = 1;
-  }
+  Ball() : Unit(1, 1) {}
 };
 
 class Pad : public Unit {
