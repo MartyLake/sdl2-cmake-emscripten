@@ -4,7 +4,7 @@ and may not be redistributed without written permission.*/
 // Using SDL and standard IO
 #include <SDL.h>
 #include <SDL_image.h>
-#include <SDL_ttf.h>
+//#include <SDL_ttf.h>
 #include <iostream>
 #include <stdio.h>
 #include <string>
@@ -13,6 +13,7 @@ and may not be redistributed without written permission.*/
 #include <emscripten.h>
 #endif
 
+#include "font.h"
 #include "gameBoard.h"
 #include "render.h"
 // Key press surfaces constants
@@ -81,11 +82,11 @@ bool init() {
   }
 
   TTF_Init();
-  const auto fontName = "rsc/BebasNeue Bold.ttf";
+  const auto fontName = "rsc/font.ttf";
   font = TTF_OpenFont(fontName, 20);
   if (font == NULL) {
     printf("TTF_Fount could not initialize font %s! SDL_image Error: %s\n",
-           fontName, TTF_GetError());
+           fontName, /*TTF_GetError()*/ "err");
     success = false;
   }
 

@@ -3,7 +3,8 @@
 #include "unit.h"
 #include <SDL.h>
 #include <SDL_image.h>
-#include <SDL_ttf.h>
+//#include <SDL_ttf.h>
+#include "font.h"
 namespace render {
 void Do(const std::list<std::shared_ptr<Unit>> &units, int screenW, int screenH,
         int gameX, int gameY, SDL_Surface *surface) {
@@ -39,10 +40,12 @@ void Do(const std::list<std::shared_ptr<Unit>> &units, int screenW, int screenH,
 void Do(const Score &score, int screenW, int screenH, SDL_Surface *surface,
         TTF_Font *font) {
   SDL_Color color = {50, 50, 0};
+  SDL_Color colorbg = {200, 200, 200};
 
   const auto stringText = std::to_string(score.getScoreP1()) + " : " +
                           std::to_string(score.getScoreP2());
-  auto texte = TTF_RenderText_Solid(font, stringText.c_str(), color);
+  // auto texte = TTF_RenderText_Solid(font, stringText.c_str(), color);
+  auto texte = TTF_RenderUTF8_Shaded(font, stringText.c_str(), color, colorbg);
   SDL_Rect position;
   position.x = 5;
   position.y = 5;

@@ -17,6 +17,7 @@ file(GLOB PROJECT_SOURCES
     "src/*.cpp"
 )
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
+message(STATUS "PROJECT_SOURCES: " ${PROJECT_SOURCES})
 configure_file("${CMAKE_SOURCE_DIR}/rsc/test.bmp"
   "${CMAKE_BINARY_DIR}/rsc/test.bmp"
   COPYONLY
@@ -42,7 +43,7 @@ configure_file("${CMAKE_SOURCE_DIR}/rsc/press.bmp"
   COPYONLY
 )
 configure_file("${CMAKE_SOURCE_DIR}/rsc/BebasNeue Bold.ttf"
-  "${CMAKE_BINARY_DIR}/rsc/BebasNeue Bold.ttf"
+  "${CMAKE_BINARY_DIR}/rsc/font.ttf"
   COPYONLY
 )
 
@@ -60,7 +61,7 @@ if("${CMAKE_SYSTEM_NAME}" STREQUAL "Emscripten")
   target_link_libraries(${PROJECT_NAME} "-s WASM=1") #web assembly FTW
   target_link_libraries(${PROJECT_NAME} "-s USE_SDL=2")
   target_link_libraries(${PROJECT_NAME} "-s USE_SDL_IMAGE=2")
-  target_link_libraries(${PROJECT_NAME} "-s USE_SDL_TTF=2")
+  #target_link_libraries(${PROJECT_NAME} "-s USE_SDL_TTF=2")
   target_link_libraries(${PROJECT_NAME} "-s SDL2_IMAGE_FORMATS='[\"png\", \"bmp\"]'")
   target_link_libraries(${PROJECT_NAME} "-s ASSERTIONS=1")
   #target_link_libraries(${PROJECT_NAME} "-s USE_SDL_IMAGE_FORMATS='[\"png\"]'")
@@ -95,10 +96,12 @@ else()
   target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC
     ${SDL2_INCLUDE_DIR}
     ${SDL2_IMAGE_INCLUDE_DIR}
-    ${SDL2_TTF_INCLUDE_DIR})
+    #    ${SDL2_TTF_INCLUDE_DIR}i
+    )
   target_link_libraries(${PROJECT_NAME} 
     ${SDL2_LIBRARY}
     ${SDL2_IMAGE_LIBRARIES}
-    ${SDL2_TTF_LIBRARIES})
+    #${SDL2_TTF_LIBRARIES}
+    )
 endif()
 
